@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
@@ -10,9 +10,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { login } = useAuth();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -21,8 +21,9 @@ const LoginPage = () => {
     
     setLoading(false);
     
-    if (success) {
-      navigate("/dashboard");
+if (success) {
+      const redirectPath = searchParams.get("redirect");
+      navigate(redirectPath || "/dashboard");
     }
   };
 

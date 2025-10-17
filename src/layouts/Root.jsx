@@ -4,7 +4,7 @@ import { useEffect, useState, createContext, useContext } from "react";
 import { setUser, clearUser, setInitialized } from "@/store/userSlice";
 import { getRouteConfig, verifyRouteAccess } from "@/router/route.utils";
 import { getApperClient } from "@/services/apperClient";
-
+import sellerService from "@/services/api/sellerService";
 // Auth context for logout functionality
 const AuthContext = createContext(null);
 
@@ -91,9 +91,39 @@ export default function Root() {
     }
   };
 
-  const handleAuthSuccess = (user) => {
+const handleAuthSuccess = async (user) => {
     if (user) {
       dispatch(setUser(user));
+      
+      // Check if user authenticated through sell flow
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectPath = urlParams.get("redirect");
+      
+      if (redirectPath && redirectPath.includes("/sell")) {
+        // Create seller record for users coming through sell flow
+        try {
+          const existingSellers = await sellerService.getAll();
+          const sellerExists = existingSellers.some(
+            seller => seller.email_c === user.emailAddress
+          );
+          
+          if (!sellerExists) {
+            const sellerData = {
+              Name: user.firstName && user.lastName 
+                ? `${user.firstName} ${user.lastName}` 
+                : user.emailAddress.split('@')[0],
+              email_c: user.emailAddress,
+              verified_c: true,
+              rating_c: 0
+            };
+            
+            await sellerService.create(sellerData);
+          }
+        } catch (error) {
+          console.error("Error creating seller record:", error);
+        }
+      }
+      
       handleNavigation();
     } else {
       dispatch(clearUser());
