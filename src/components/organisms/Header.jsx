@@ -8,7 +8,7 @@ import Dropdown, { DropdownItem, DropdownDivider } from "@/components/atoms/Drop
 import SearchModal from "@/components/molecules/SearchModal";
 import { useCart } from "@/hooks/useCart";
 import { useWishlist } from "@/hooks/useWishlist";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/layouts/Root";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
