@@ -1,8 +1,9 @@
-import productsData from "@/services/mockData/products.json";
+// Mock data removed - products initialized as empty array
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-let products = [...productsData];
+// Initialize with empty array - data can be added via create() method
+let products = [];
 
 const productService = {
   async getAll() {
