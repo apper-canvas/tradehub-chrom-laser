@@ -1,10 +1,57 @@
-import ordersData from '@/services/mockData/orders.json';
+import { getApperClient } from "@/services/apperClient";
 
 function delay(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-let orders = [...ordersData];
+// Helper function to get table name
+const getTableName = () => 'order_c';
+
+// Mock orders data
+const orders = [
+  {
+    Id: 1,
+    userId: 1,
+    orderNumber: 'ORD-2024-001',
+    orderDate: '2024-01-15T10:30:00Z',
+    status: 'delivered',
+    price: 299.99,
+    product: {
+      title: 'Wireless Headphones'
+    },
+    seller: {
+      name: 'TechStore'
+    }
+  },
+  {
+    Id: 2,
+    userId: 1,
+    orderNumber: 'ORD-2024-002',
+    orderDate: '2024-01-20T14:45:00Z',
+    status: 'processing',
+    price: 149.99,
+    product: {
+      title: 'Smart Watch'
+    },
+    seller: {
+      name: 'GadgetHub'
+    }
+  },
+  {
+    Id: 3,
+    userId: 2,
+    orderNumber: 'ORD-2024-003',
+    orderDate: '2024-01-25T09:15:00Z',
+    status: 'pending',
+    price: 89.99,
+    product: {
+      title: 'USB-C Cable'
+    },
+    seller: {
+      name: 'AccessoriesPlus'
+    }
+  }
+];
 
 const orderService = {
   async getAll() {
