@@ -170,18 +170,11 @@ onClick={() => navigate("/dashboard")}
                   </DropdownItem>
                 </Dropdown>
               ) : (
-                <>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => navigate("/login")}
-                  >
-                    Login
-                  </Button>
+<>
                   <Button
                     variant="default"
                     size="sm"
-                    onClick={() => navigate("/sign-up")}
+                    onClick={() => navigate("/signup")}
                     className="bg-primary hover:bg-primary/90 text-white"
                   >
                     Sign Up
@@ -350,20 +343,10 @@ navigate("/dashboard");
                       </button>
                     </>
                   ) : (
-                    <>
+<>
                       <button
                         onClick={() => {
-                          navigate("/login");
-                          setMobileMenuOpen(false);
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-primary/5 hover:text-primary rounded-lg transition-colors"
-                      >
-                        <ApperIcon name="LogIn" size={20} />
-                        <span className="font-medium">Login</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          navigate("/sign-up");
+                          navigate("/signup");
                           setMobileMenuOpen(false);
                         }}
                         className="w-full flex items-center gap-3 px-4 py-3 text-left text-white bg-primary hover:bg-primary/90 rounded-lg transition-colors"
