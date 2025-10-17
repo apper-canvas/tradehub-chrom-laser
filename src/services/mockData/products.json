@@ -1,0 +1,21 @@
+[
+  {
+    "Id": 1,
+    "sellerId": "1",
+    "views": 342,
+    "favorites": 28,
+    "promoted": true,
+    "description": "Classic gold frame aviators with green lenses. Authentic Ray-Ban with case and cloth. Barely worn, excellent condition.",
+    "price": 120,
+    "images": [
+      "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800",
+      "https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=800"
+    ],
+    "category": "clothing",
+    "condition": "Like New",
+    "sellerId": "1",
+    "location": "Las Vegas, NV",
+    "datePosted": "2023-12-31T09:45:00Z",
+    "status": "active"
+  }
+]
