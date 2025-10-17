@@ -7,10 +7,15 @@ import { useAuth } from "@/layouts/Root";
 const LoginPage = () => {
   const { isInitialized } = useAuth();
 
-  useEffect(() => {
+useEffect(() => {
     if (isInitialized) {
-      const { ApperUI } = window.ApperSDK;
-      ApperUI.showLogin("#authentication");
+      const authElement = document.getElementById('authentication');
+      if (authElement) {
+        const { ApperUI } = window.ApperSDK;
+        ApperUI.showLogin("#authentication");
+      } else {
+        console.error('Authentication element not found in DOM');
+      }
     }
   }, [isInitialized]);
 
