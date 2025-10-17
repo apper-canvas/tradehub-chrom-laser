@@ -1,33 +1,64 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import ApperIcon from "@/components/ApperIcon";
 import Button from "@/components/atoms/Button";
 import Input from "@/components/atoms/Input";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/layouts/Root";
 
-const SignUpPage = () => {
+function SignUpPage() {
+  const { isInitialized } = useAuth();
+  const navigate = useNavigate();
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const { signup } = useAuth();
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (isInitialized) {
+      const { ApperUI } = window.ApperSDK;
+      ApperUI.showSignup("#authentication");
+    }
+  }, [isInitialized]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+
+    // Validation
+    if (!name.trim()) {
+      setError("Please enter your full name");
+      return;
+    }
+
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
 
     if (password !== confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
 
     setLoading(true);
-    const success = await signup(name, email, password);
-    setLoading(false);
 
-    if (success) {
-      navigate("/dashboard");
+    try {
+      if (window.ApperSDK?.Auth) {
+        const { Auth } = window.ApperSDK;
+        await Auth.signUp(email, password, { name });
+        navigate("/dashboard");
+      } else {
+        throw new Error("Authentication service not available");
+      }
+    } catch (err) {
+      console.error("Sign up error:", err);
+      setError(err?.message || "Failed to create account. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,7 +78,13 @@ const SignUpPage = () => {
               Create Account
             </h1>
             <p className="text-gray-500 mt-2">Join TradeHub today</p>
-          </div>
+</div>
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-600 rounded-lg text-sm">
+              {error}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
