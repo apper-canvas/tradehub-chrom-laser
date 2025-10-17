@@ -41,9 +41,9 @@ useEffect(() => {
     return acc;
   }, {});
 
-  // Group products by category
+// Group products by category
   const productsByCategory = products.reduce((acc, product) => {
-    const categoryId = product.categoryId;
+    const categoryId = product.category_c;
     if (!acc[categoryId]) {
       acc[categoryId] = [];
     }
