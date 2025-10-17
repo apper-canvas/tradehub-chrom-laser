@@ -1,19 +1,71 @@
-import categoriesData from "@/services/mockData/categories.json";
-
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-let categories = [...categoriesData];
+import { getApperClient } from "@/services/apperClient";
 
 const categoryService = {
   async getAll() {
-    await delay(200);
-    return categories.map(c => ({ ...c }));
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        return [];
+      }
+
+      const response = await apperClient.fetchRecords("category_c", {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "name_c" } },
+          { field: { Name: "icon_c" } },
+          { field: { Name: "count_c" } },
+          { field: { Name: "id_c" } }
+        ]
+      });
+
+      if (!response.success) {
+        console.error("Failed to fetch categories:", response.message);
+        return [];
+      }
+
+      return response.data || [];
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      return [];
+    }
   },
 
   async getById(id) {
-    await delay(150);
-    const category = categories.find(c => c.id === id);
-    return category ? { ...category } : null;
+    try {
+      const apperClient = getApperClient();
+      if (!apperClient) {
+        console.error("ApperClient not initialized");
+        return null;
+      }
+
+      const response = await apperClient.fetchRecords("category_c", {
+        fields: [
+          { field: { Name: "Name" } },
+          { field: { Name: "name_c" } },
+          { field: { Name: "icon_c" } },
+          { field: { Name: "count_c" } },
+          { field: { Name: "id_c" } }
+        ],
+        where: [
+          {
+            FieldName: "id_c",
+            Operator: "EqualTo",
+            Values: [id]
+          }
+        ]
+      });
+
+      if (!response.success) {
+        console.error("Failed to fetch category:", response.message);
+        return null;
+      }
+
+      return response.data?.[0] || null;
+    } catch (error) {
+      console.error("Error fetching category:", error);
+      return null;
+    }
   }
 };
 
